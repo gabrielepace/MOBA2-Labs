@@ -19,7 +19,7 @@
     }
 
     .container {
-      width: 650px;
+      width: 600px;
       height: 650px;
     }
 
@@ -84,8 +84,8 @@
 
 
     var defaultgrid = [];
-    for (let i = 0; i < 8; i++) {
-      for (let j = 0; j < 8; j++) {
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 7; j++) {
         defaultgrid.push({
           id: cuid(),
           color: 'white',
@@ -94,45 +94,17 @@
       }
 
     }
-    defaultgrid[60].color="red";
-    defaultgrid[61].color="blue";
+    defaultgrid[40].color="red";
+    defaultgrid[39].color="blue";
 
 
     class MyFeature extends Component {
 
       constructor() {
         super();
-
-
-
-
-        // The state of this component is consists of
-        // three properties: a collection of articles,
-        // a title, and a summary. The "fromJS()" call
-        // is used to build an "Immutable.js" Map. Also
-        // note that this isn't set directly as the component
-        // state - it's in a "data" property of the state -
-        // otherwise, state updates won't work as expected.
         this.state = {
           data: fromJS({
             articles: defaultgrid
-            // articles: [
-            //   {
-            //     id: cuid(),
-            //     color: 'white',
-            //   },
-            //   {
-            //     id: cuid(),
-            //     color: 'blue',
-            //   }, {
-            //     id: cuid(),
-            //     color: 'red',
-            //   },
-            //   {
-            //     id: cuid(),
-            //     color: 'white',
-            //   },
-            // ],
           }),
         };
       }
@@ -156,9 +128,6 @@
 
         return (
           <section className="container">
-            { /* Now the list of articles is rendered by the
-             "ArticleList" component. This component can
-             now be used in several other components. */ }
             <ArticleList
               articles={articles}
             />
