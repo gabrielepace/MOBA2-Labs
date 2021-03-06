@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>React Demo: Reusable Components</title>
+  <!-- Script tags including React -->
+  <script src="lib/react/react.js"></script>
+  <script src="lib/react/react-dom.js"></script>
+  <script src="lib/babel/babel.min.js"></script>
+  <script src="lib/cuid.js"></script>
+  <script src="lib/immutable.min.js"></script>
+</head>
+
+<body>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 650px;
+      height: 650px;
+    }
+
+    .box {
+      width: 80px;
+      height: 80px;
+      border: 1px solid black;
+      display: inline-block;
+      position: relative;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 0px;
+      padding: 0px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+  </style>
+  <div id="app"></div>
+  <script type="text/babel">
+
+
+    //import React from 'react';
+    //import { render } from 'react-dom';
+    let { render } = ReactDOM;
+    let { Component } = React;
+    let { fromJS } = Immutable;
+
+
+    const ArticleItem = ({
+      article,
+    }) => (
+      <div className="box">
+        <div className="circle" style={{ "backgroundColor": article.color }}>
+
+        </div>
+      </div>
+    );
+
+
+
+    const ArticleList = ({
+      articles,
+    }) => (
+      <div>
+        {articles.map(i => (
+          <ArticleItem
+            key={i.id}
+            article={i}
+          />
+        ))}
+      </div>
+    );
+
+
+    var defaultgrid = [];
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        defaultgrid.push({
+          id: cuid(),
+          color: 'white',
+        })
+
+      }
+
+    }
+    defaultgrid[60].color="red";
+    defaultgrid[61].color="blue";
+
+
+    class MyFeature extends Component {
+
+      constructor() {
+        super();
+
+
+
+
+        // The state of this component is consists of
+        // three properties: a collection of articles,
+        // a title, and a summary. The "fromJS()" call
+        // is used to build an "Immutable.js" Map. Also
+        // note that this isn't set directly as the component
+        // state - it's in a "data" property of the state -
+        // otherwise, state updates won't work as expected.
+        this.state = {
+          data: fromJS({
+            articles: defaultgrid
+            // articles: [
+            //   {
+            //     id: cuid(),
+            //     color: 'white',
+            //   },
+            //   {
+            //     id: cuid(),
+            //     color: 'blue',
+            //   }, {
+            //     id: cuid(),
+            //     color: 'red',
+            //   },
+            //   {
+            //     id: cuid(),
+            //     color: 'white',
+            //   },
+            // ],
+          }),
+        };
+      }
+
+
+
+      // Getter for "Immutable.js" state data...
+      get data() {
+        return this.state.data;
+      }
+
+      // Setter for "Immutable.js" state data...
+      set data(data) {
+        this.setState({ data });
+      }
+
+      render() {
+        const {
+          articles,
+        } = this.data.toJS();
+
+        return (
+          <section className="container">
+            { /* Now the list of articles is rendered by the
+             "ArticleList" component. This component can
+             now be used in several other components. */ }
+            <ArticleList
+              articles={articles}
+            />
+          </section>
+        );
+      }
+    }
+
+
+
+    render(
+      (<MyFeature />),
+      document.getElementById('app')
+    );
+
+
+
+
+
+  </script>
+</body>
+
+</html>
