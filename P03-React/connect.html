@@ -59,8 +59,9 @@
 
     const ArticleItem = ({
       article,
+      onClickAdd,
     }) => (
-      <div className="box">
+      <div className="box" onClick={() => { onClickAdd(article.x, article.y) }}>
         <div className="circle" style={{ "backgroundColor": article.color }}>
 
         </div>
@@ -71,12 +72,14 @@
 
     const ArticleList = ({
       articles,
+      onClickAdd,
     }) => (
       <div>
         {articles.map(i => (
           <ArticleItem
             key={i.id}
             article={i}
+            onClickAdd={onClickAdd}
           />
         ))}
       </div>
@@ -88,14 +91,17 @@
       for (let j = 0; j < 7; j++) {
         defaultgrid.push({
           id: cuid(),
+          x: j,
+          y: 5 - i,
           color: 'white',
         })
 
       }
 
     }
-    defaultgrid[40].color="red";
-    defaultgrid[39].color="blue";
+    defaultgrid[40].color = "red";
+    defaultgrid[39].color = "blue";
+    var red = false;
 
 
     class MyFeature extends Component {
@@ -107,6 +113,31 @@
             articles: defaultgrid
           }),
         };
+        this.onClickAdd = this.onClickAdd.bind(this);
+      }
+
+
+      onClickAdd(x, y) {
+        console.log(x + " " + y);
+        const index = this.data
+          .get('articles')
+          .findIndex(
+            a => a.get('x') === x && a.get('y') === y
+          );
+        console.log(index);
+        var old = this.data.get("articles").get(index).get("color");
+        console.log(this.data);
+        if(old !== "white")return
+
+        this.data = this.data
+          .update(
+            'articles',
+            articles => articles.update(
+              index,
+              a => a.set('color', (red ? "red":"blue"))
+            )
+          );
+        red = !red;
       }
 
 
@@ -130,6 +161,7 @@
           <section className="container">
             <ArticleList
               articles={articles}
+              onClickAdd={this.onClickAdd}
             />
           </section>
         );
