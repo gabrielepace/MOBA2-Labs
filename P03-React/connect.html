@@ -56,18 +56,98 @@
     let { Component } = React;
     let { fromJS } = Immutable;
 
+    var defaultgrid = [];
+    for (let i = 0; i < 6; i++) {
+      for (let j = 0; j < 7; j++) {
+        defaultgrid.push({
+          id: cuid(),
+          x: j,
+          y: 5 - i,
+          color: 'white',
+        })
 
-    const ArticleItem = ({
-      article,
-      onClickAdd,
-    }) => (
-      <div className="box" onClick={() => { onClickAdd(article.x, article.y) }}>
-        <div className="circle" style={{ "backgroundColor": article.color }}>
+      }
 
-        </div>
-      </div>
-    );
+    }
+    // defaultgrid[40].color = "red";
+    // defaultgrid[39].color = "blue";
+    var red = false;
 
+
+    class MyFeature extends Component {
+
+      constructor() {
+        super();
+        this.state = {
+          data: fromJS({
+            articles: defaultgrid
+          }),
+        };
+        this.onClickAdd = this.onClickAdd.bind(this);
+      }
+
+      getColor(x, y) {
+        return this.data.get("articles").get(this.data.get('articles').findIndex(a => a.get('x') === x && a.get('y') === y)).get("color");
+      }
+
+      setColor(x, y, newcolor) {
+        this.data = this.data.update('articles', articles => articles.update(this.data.get('articles').findIndex(a => a.get('x') === x && a.get('y') === y), a => a.set('color', newcolor)));
+      }
+
+      onClickReset() {
+        console.log("reset");
+        this.data = this.data.set('articles', fromJS(defaultgrid));
+        red = false;
+      }
+
+      onClickAdd(x, y) {
+
+        var lowestY = -1;
+        for (let i = 5; i >= 0; i--) {
+          console.log(i + "    " + this.getColor(x, i));
+          if (this.getColor(x, i) !== "white") {
+            lowestY = i + 1;
+            break;
+          }
+          if (i === 0) {
+            lowestY = 0;
+            break;
+          }
+
+        }
+
+        if (lowestY == -1) return
+        if (this.getColor(x, lowestY) !== "white") return
+        this.setColor(x, lowestY, (red ? "red" : "blue"))
+        red = !red;
+      }
+
+
+
+      get data() {
+        return this.state.data;
+      }
+
+      set data(data) {
+        this.setState({ data });
+      }
+
+      render() {
+        const {
+          articles,
+        } = this.data.toJS();
+
+        return (
+          <section className="container">
+            <ArticleList
+              articles={articles}
+              onClickAdd={this.onClickAdd}
+            />
+            <button onClick={() => { this.onClickReset() }}>reset</button>
+          </section>
+        );
+      }
+    }
 
 
     const ArticleList = ({
@@ -85,88 +165,21 @@
       </div>
     );
 
+    const ArticleItem = ({
+      article,
+      onClickAdd,
+    }) => (
+      <div className="box" onClick={() => { onClickAdd(article.x, article.y) }}>
+        <div className="circle" style={{ "backgroundColor": article.color }}>
 
-    var defaultgrid = [];
-    for (let i = 0; i < 6; i++) {
-      for (let j = 0; j < 7; j++) {
-        defaultgrid.push({
-          id: cuid(),
-          x: j,
-          y: 5 - i,
-          color: 'white',
-        })
-
-      }
-
-    }
-    defaultgrid[40].color = "red";
-    defaultgrid[39].color = "blue";
-    var red = false;
-
-
-    class MyFeature extends Component {
-
-      constructor() {
-        super();
-        this.state = {
-          data: fromJS({
-            articles: defaultgrid
-          }),
-        };
-        this.onClickAdd = this.onClickAdd.bind(this);
-      }
-
-
-      onClickAdd(x, y) {
-        console.log(x + " " + y);
-        const index = this.data
-          .get('articles')
-          .findIndex(
-            a => a.get('x') === x && a.get('y') === y
-          );
-        console.log(index);
-        var old = this.data.get("articles").get(index).get("color");
-        console.log(this.data);
-        if(old !== "white")return
-
-        this.data = this.data
-          .update(
-            'articles',
-            articles => articles.update(
-              index,
-              a => a.set('color', (red ? "red":"blue"))
-            )
-          );
-        red = !red;
-      }
+        </div>
+      </div>
+    );
 
 
 
-      // Getter for "Immutable.js" state data...
-      get data() {
-        return this.state.data;
-      }
 
-      // Setter for "Immutable.js" state data...
-      set data(data) {
-        this.setState({ data });
-      }
 
-      render() {
-        const {
-          articles,
-        } = this.data.toJS();
-
-        return (
-          <section className="container">
-            <ArticleList
-              articles={articles}
-              onClickAdd={this.onClickAdd}
-            />
-          </section>
-        );
-      }
-    }
 
 
 
