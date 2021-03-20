@@ -1,6 +1,6 @@
 # MOBA2 - Labs
 
-Labs
+Labs (FS2021)
 
 ## Authors: 
  * Gabriele Pace ([pacegab1](https://github.zhaw.ch/pacegab1)) 
