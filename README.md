@@ -3,5 +3,5 @@
 Labs
 
 ## Authors: 
- * Pace Gabriele ([pacegab1](https://github.zhaw.ch/pacegab1)) 
- * Laborie Timothé ([labortim](https://github.zhaw.ch/labortim)) 
+ * Gabriele Pace ([pacegab1](https://github.zhaw.ch/pacegab1)) 
+ * Timothé Laborie ([labortim](https://github.zhaw.ch/labortim)) 
