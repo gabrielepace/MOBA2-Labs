@@ -7,7 +7,7 @@ class GameIteration {
         board = Array(repeating: Array(repeating: 0, count: size), count: size)
         for idx in 0...3 {
             for jdx in 0...3 {
-                board[idx][jdx] = random() % 2
+                board[idx][jdx] = random() % 2 // In Xcode works: board[idx][jdx] = Int(arc4random() % 2)
             }
         }
     }
