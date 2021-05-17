@@ -76,6 +76,18 @@ struct ContentView: View {
             if (self.operation1 == "*") {
                 self.fieldNumber = String(Int(self.fieldNumber)! * self.number1!)
             }
+            if (self.operation1 == "+") {
+                self.fieldNumber = String(Int(self.fieldNumber)! + self.number1!)
+            }
+            if (self.operation1 == "-") {
+                self.fieldNumber = String(self.number1! - Int(self.fieldNumber)!)
+            }
+            if (self.operation1 == "/") {
+                self.fieldNumber = String(Int(self.fieldNumber)! / self.number1!)
+            }
+            if (self.operation1 == "%") {
+                self.fieldNumber = String(Int(self.fieldNumber)! % self.number1!)
+            }
         }
     }
     
